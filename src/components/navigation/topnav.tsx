@@ -12,6 +12,9 @@ import {
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
 import { useEffect, useState } from "react";
+import SearchGames from "../widgets/SearchGames";
+import MobileSearchGames from "../widgets/MobileSearchGames";
+import Image from "next/image";
 
 interface TopNavProps {
   className?: string;
@@ -46,85 +49,21 @@ const TopNav = ({ className }: TopNavProps) => {
             <span className="sr-only">Toggle navigation menu</span>
           </Button>
         </SheetTrigger>
-        <SheetContent side="left" className="sm:max-w-xs">
+        <SheetContent side="left" className="w-full sm:max-w-xs">
           <div className="flex flex-col gap-2">
-            <div className="flex h-[60px] items-center px-6">
-              <Link
-                href="#"
-                className="flex items-center gap-2 font-semibold"
-                prefetch={false}
-              >
-                {/* <InboxIcon className="h-6 w-6" /> */}
-                <span className="">Inbox</span>
-              </Link>
+            <div className="">
+              <MobileSearchGames />
             </div>
-            <div className="flex-1">
-              <nav className="grid items-start px-4 text-sm font-medium">
-                <Link
-                  href="#"
-                  className="flex items-center gap-3 rounded-lg px-3 py-2 text-primary bg-muted"
-                  prefetch={false}
-                >
-                  {/* <InboxIcon className="h-4 w-4" /> */}
-                  Inbox
-                </Link>
-                <Link
-                  href="#"
-                  className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
-                  prefetch={false}
-                >
-                  {/* <FileIcon className="h-4 w-4" /> */}
-                  Drafts
-                </Link>
-                <Link
-                  href="#"
-                  className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
-                  prefetch={false}
-                >
-                  {/* <SendIcon className="h-4 w-4" /> */}
-                  Sent
-                </Link>
-                <Link
-                  href="#"
-                  className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
-                  prefetch={false}
-                >
-                  {/* <Trash2Icon className="h-4 w-4" /> */}
-                  Trash
-                </Link>
-                <Link
-                  href="#"
-                  className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
-                  prefetch={false}
-                >
-                  {/* <ArchiveIcon className="h-4 w-4" /> */}
-                  Archived
-                </Link>
-                <Link
-                  href="#"
-                  className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
-                  prefetch={false}
-                >
-                  {/* <ArchiveXIcon className="h-4 w-4" /> */}
-                  Spam
-                </Link>
-                <Link
-                  href="#"
-                  className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
-                  prefetch={false}
-                >
-                  {/* <UsersIcon className="h-4 w-4" /> */}
-                  Contacts
-                </Link>
-              </nav>
-            </div>
+
           </div>
         </SheetContent>
       </Sheet>
       <div
         className={`flex w-full flex-row justify-between items-center ${className}`}
       >
-        <div>hellow</div>
+        <div>
+          <SearchGames />
+        </div>
         <div className="space-x-4 flex flex-row items-center">
           <div>
             <DropdownMenu>
