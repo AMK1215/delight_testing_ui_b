@@ -15,6 +15,12 @@ export default {
         active: "rgba(127,248,2,255)",
         primary: "rgba(23,23,23,255)",
       },
+      backgroundColor: {
+        background: "rgba(23,23,23,255)",
+        secondary: "rgba(35,35,35,255)",
+        active: "rgba(127,248,2,255)",
+        primary: "rgba(23,23,23,255)",
+      },
       borderRadius: {
         lg: "20px",
         md: "10px",
