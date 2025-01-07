@@ -20,7 +20,7 @@ const Banners = () => {
           })}
         </CarouselContent>
         <div className="absolute z-10 bottom-8 right-14 left-14">
-          <CarouselPrevious className='bg-transparent border-2 border-white w-6 h-6 sm:w-10 sm:h-10 ' />
+          <CarouselPrevious className='bg-transparent border-2 border-white w-6 h-6 sm:w-10 sm:h-10 z-10' />
           <CarouselNext className='bg-transparent border-2 border-white w-6 h-6  sm:w-10 sm:h-10' />
         </div>
       </Carousel>
@@ -32,7 +32,6 @@ const Banners = () => {
         <p className='text-[15px] sm:text-base text-active font-semibold'>– Join Today!
         </p>
       </div>
-
     </div>
   );
 };
