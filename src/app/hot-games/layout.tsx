@@ -1,3 +1,4 @@
+import HomeLayout from "@/components/layout/HomeLayout";
 import TabsLayout from "../../components/layout/TabsLayout";
 
 export default function HotGamesLayout({
@@ -5,5 +6,9 @@ export default function HotGamesLayout({
 }: {
   children: React.ReactNode;
 }) {
-  return <TabsLayout>{children}</TabsLayout>;
+  return (
+    <HomeLayout>
+      <TabsLayout>{children}</TabsLayout>
+    </HomeLayout>
+  );
 }

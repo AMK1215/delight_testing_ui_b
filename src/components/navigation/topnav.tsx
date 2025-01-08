@@ -2,7 +2,6 @@
 
 import { Sheet, SheetTrigger, SheetContent } from "@/components/ui/sheet";
 import { Button } from "../ui/button";
-import Link from "next/link";
 import { MenuIcon } from "lucide-react";
 import { DropdownMenu } from "@radix-ui/react-dropdown-menu";
 import {
@@ -14,13 +13,14 @@ import {
 import { useEffect, useState } from "react";
 import SearchGames from "../widgets/SearchGames";
 import MobileSearchGames from "../widgets/MobileSearchGames";
-import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 interface TopNavProps {
   className?: string;
 }
 
 const TopNav = ({ className }: TopNavProps) => {
+  const router = useRouter();
   const [language, setLanguage] = useState<string>("english");
 
   useEffect(() => {
@@ -54,7 +54,6 @@ const TopNav = ({ className }: TopNavProps) => {
             <div className="">
               <MobileSearchGames />
             </div>
-
           </div>
         </SheetContent>
       </Sheet>
@@ -107,12 +106,18 @@ const TopNav = ({ className }: TopNavProps) => {
             </DropdownMenu>
           </div>
           <div>
-            <Button className="border bg-active border-active text-black hover:text-active font-bold rounded-full">
+            <Button
+              className="border bg-active border-active text-black hover:text-active font-bold rounded-full"
+              onClick={() => router.push("/register")}
+            >
               Sign Up
             </Button>
           </div>
           <div>
-            <Button className="border border-active text-active rounded-full font-bold">
+            <Button
+              className="border border-active text-active rounded-full font-bold"
+              onClick={() => router.push("/login")}
+            >
               Login
             </Button>
           </div>

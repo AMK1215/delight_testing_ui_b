@@ -1,3 +1,4 @@
+import HomeLayout from "@/components/layout/HomeLayout";
 import TabsLayout from "../../../components/layout/TabsLayout";
 
 export default function LiveCasinoLayout({
@@ -5,5 +6,9 @@ export default function LiveCasinoLayout({
 }: {
   children: React.ReactNode;
 }) {
-  return <TabsLayout>{children}</TabsLayout>;
+  return (
+    <HomeLayout>
+      <TabsLayout>{children}</TabsLayout>
+    </HomeLayout>
+  );
 }
