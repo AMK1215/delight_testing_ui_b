@@ -28,7 +28,7 @@ export default function RootLayout({
     <html lang="en">
       <head />
       <body
-        className={`h-full w-full flex bg-background text-white flex-col ${geistSans.variable} ${geistMono.variable}`}
+        className={`h-full w-full flex bg-background overflow-hidden text-white flex-col ${geistSans.variable} ${geistMono.variable}`}
       >
         <QueryProvider>
           <AuthProvider>{children}</AuthProvider>
