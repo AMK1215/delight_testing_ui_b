@@ -1,6 +1,7 @@
 import { TransactionHistory } from "@/@types/transaction-history";
 import { ApiConfig } from "@/configs/apiConfig";
 import { apiService } from "@/utils/apiService";
+import get from "lodash/get";
 
 const depositWallet = async ({
   agent_payment_type_id,
@@ -33,7 +34,11 @@ const depositWallet = async ({
     };
   } catch (error) {
     console.error(error);
-    throw new Error(`Fail to deposit : ${error}`);
+    if (get(error, "response", undefined)) {
+      console.error("Error Status Code:", get(error, "response.status"));
+      console.error("Error Response Data:", get(error, "response.data"));
+    }
+    throw new Error(`${get(error, "response.data.message")}`);
   }
 };
 
@@ -70,7 +75,11 @@ const withdrawWallet = async ({
     };
   } catch (error) {
     console.error(error);
-    throw new Error(`Fail to withdraw : ${error}`);
+    if (get(error, "response", undefined)) {
+      console.error("Error Status Code:", get(error, "response.status"));
+      console.error("Error Response Data:", get(error, "response.data"));
+    }
+    throw new Error(`${get(error, "response.data.message")}`);
   }
 };
 
@@ -80,10 +89,14 @@ const fetchDepositHistory = async () => {
       `${ApiConfig.baseUrl}/${ApiConfig.depositHistory}`
     );
 
-    return data as TransactionHistory[];
+    return data.data as TransactionHistory[];
   } catch (error) {
     console.error(error);
-    throw new Error(`Error at fetching transaction history ${error}`);
+    if (get(error, "response", undefined)) {
+      console.error("Error Status Code:", get(error, "response.status"));
+      console.error("Error Response Data:", get(error, "response.data"));
+    }
+    throw new Error(`${get(error, "response.data.message")}`);
   }
 };
 
@@ -93,10 +106,14 @@ const fetchWithdrawHistory = async () => {
       `${ApiConfig.baseUrl}/${ApiConfig.withdrawHistory}`
     );
 
-    return data as TransactionHistory[];
+    return data.data as TransactionHistory[];
   } catch (error) {
     console.error(error);
-    throw new Error(`Error at fetching transaction history ${error}`);
+    if (get(error, "response", undefined)) {
+      console.error("Error Status Code:", get(error, "response.status"));
+      console.error("Error Response Data:", get(error, "response.data"));
+    }
+    throw new Error(`${get(error, "response.data.message")}`);
   }
 };
 

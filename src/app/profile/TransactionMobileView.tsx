@@ -1,14 +1,19 @@
-import { Histories } from "./data";
 import { PiHandDeposit } from "react-icons/pi";
 import { PiHandWithdraw } from "react-icons/pi";
 import { Accordion, AccordionContent } from "@radix-ui/react-accordion";
 import { AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import clsx from "clsx";
+import { TransactionHistory } from "@/@types/transaction-history";
 
-const TransactionMobileView = () => {
+interface TransactionMobileViewProps {
+  data: TransactionHistory[];
+  type: "deposit" | "withdraw";
+}
+
+const TransactionMobileView = ({ data, type }: TransactionMobileViewProps) => {
   return (
     <div className="space-y-2">
-      {Histories.map((history, idx) => (
+      {data.map((history, idx) => (
         <Accordion
           type="single"
           collapsible
@@ -19,7 +24,7 @@ const TransactionMobileView = () => {
             <AccordionTrigger>
               <div className="flex flex-row space-x-3 items-center justify-center w-full pr-4">
                 <div className="">
-                  {history.type === "deposit" ? (
+                  {type === "deposit" ? (
                     <PiHandDeposit className="h-7 w-7 text-active" />
                   ) : (
                     <PiHandWithdraw className="h-7 w-7 text-yellow-400" />
@@ -29,35 +34,28 @@ const TransactionMobileView = () => {
                   <div className="flex flex-col items-start">
                     <div className="flex flex-row space-x-3">
                       <span>
-                        {history.type === "deposit" ? "Desposit" : "Withdrawal"}
+                        {type === "deposit" ? "Desposit" : "Withdrawal"}
                       </span>
                       <div
-                        className={clsx("px-2 border rounded-full", {
+                        className={clsx("px-2 border flex items-center justify-center rounded-full", {
                           "border-yellow-400 text-yellow-400":
-                            history.status === "pending",
+                            history.status === "Pending",
                           "border-active text-active":
-                            history.status === "approve",
+                            history.status === "Success",
                           "border-red-500 text-red-500":
-                            history.status === "reject",
+                            history.status === "Reject",
                         })}
                       >
                         <p className="text-xs">{history.status}</p>
                       </div>
                     </div>
 
-                    <p className="text-xs text-gray-400">
-                      {history.created_at}
-                    </p>
+                    <p className="text-xs text-gray-400">{history.datetime}</p>
                   </div>
                 </div>
-                {/* <div>
-                  
-                </div> */}
                 <div className="">
                   <span className="text-lg">
-                    {`${history.type === "deposit" ? "+" : "-"} ${
-                      history.amount
-                    }`}
+                    {`${history.amount}`}
                   </span>
                 </div>
               </div>
@@ -68,8 +66,8 @@ const TransactionMobileView = () => {
                 <div>: {history.account_name}</div>
                 <div>Account Number</div>
                 <div>: {history.account_number}</div>
-                <div>Provider</div>
-                <div>: {history.provider}</div>
+                <div>Payment Provider</div>
+                <div>: {history.payment_type}</div>
               </div>
             </AccordionContent>
           </AccordionItem>

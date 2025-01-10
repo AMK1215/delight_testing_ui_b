@@ -22,9 +22,11 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { fetchPaymentProviders } from "@/services/paymentProviderService";
-import { XIcon } from "lucide-react";
+import { LucideLoader2, XIcon } from "lucide-react";
+import { depositWallet } from "@/services/walletService";
+import { toast } from "sonner";
 
 interface DepositFormProps {
   onDialogClose: () => void;
@@ -33,8 +35,15 @@ interface DepositFormProps {
 // Define form schema with zod
 const formSchema = z.object({
   agent_payment_type_id: z.string().min(1, { message: "It is required!" }),
-  amount: z.string().min(1, { message: "It is required!" }),
-  reference_no: z.string().min(1, { message: "It is required!" }),
+  amount: z
+    .string()
+    .min(1, { message: "It is required!" })
+    .refine((value) => parseInt(value) >= 1000, {
+      message: "Amount must be at least 1000!",
+    }),
+  reference_no: z.string().regex(/^\d{6}$/, {
+    message: "Reference number must be exactly 6 digits (numbers only)!",
+  }),
 });
 
 const DepositForm = ({ onDialogClose }: DepositFormProps) => {
@@ -52,8 +61,31 @@ const DepositForm = ({ onDialogClose }: DepositFormProps) => {
     queryFn: fetchPaymentProviders,
   });
 
+  const { mutate: doPayment, isPending } = useMutation({
+    mutationFn: depositWallet,
+    onSuccess: () => {
+      onDialogClose();
+    },
+    onError: (error) => {
+      console.error(error);
+      toast(`${error.message}`, {
+        style: {
+          backgroundColor: "#FF4444",
+          color: "white",
+          borderRadius: "8px",
+          padding: "10px",
+          fontWeight: "bold",
+        },
+      });
+    },
+  });
+
   const onSubmit = (values: z.infer<typeof formSchema>) => {
-    console.log("Form submitted:", values);
+    doPayment({
+      agent_payment_type_id: parseInt(values.agent_payment_type_id),
+      amount: parseInt(values.amount),
+      reference_number: values.reference_no,
+    });
   };
 
   return (
@@ -180,6 +212,19 @@ const DepositForm = ({ onDialogClose }: DepositFormProps) => {
                   placeholder="Enter Reference Number"
                   className="border border-input"
                   {...field}
+                  onKeyDown={(e) => {
+                    // Allow only numeric input
+                    if (
+                      !/^[0-9]+$/.test(e.key) &&
+                      e.key !== "Backspace" &&
+                      e.key !== "Delete" &&
+                      e.key !== "ArrowLeft" &&
+                      e.key !== "ArrowRight" &&
+                      e.key !== "Tab"
+                    ) {
+                      e.preventDefault();
+                    }
+                  }}
                 />
               </FormControl>
               <FormMessage>
@@ -201,7 +246,11 @@ const DepositForm = ({ onDialogClose }: DepositFormProps) => {
             type="submit"
             className="bg-active text-black hover:text-white hover:bg-secondary hover:border hover:border-active"
           >
-            Submit
+            {isPending ? (
+              <LucideLoader2 className="animate-spin h-3 w-3" />
+            ) : (
+              "Submit"
+            )}
           </Button>
         </div>
       </form>

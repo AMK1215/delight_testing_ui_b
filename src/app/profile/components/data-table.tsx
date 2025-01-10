@@ -44,10 +44,10 @@ export function DataTable<TData, TValue>({
   columns,
   data,
   loading = false,
-  enablePagination = true,
-  pagingData,
-  onPageSizeChange,
-  onPaginationChange,
+  // enablePagination = true,
+  // pagingData,
+  // onPageSizeChange,
+  // onPaginationChange,
 }: DataTableProps<TData, TValue>) {
   const [rowSelection, setRowSelection] = React.useState({});
   const [columnVisibility, setColumnVisibility] =
@@ -57,17 +57,17 @@ export function DataTable<TData, TValue>({
   );
   const [sorting, setSorting] = React.useState<SortingState>([]);
 
-  const handlePaginationChange = (page: number) => {
-    if (!loading) {
-      onPaginationChange?.(page);
-    }
-  };
+  // const handlePaginationChange = (page: number) => {
+  //   if (!loading) {
+  //     onPaginationChange?.(page);
+  //   }
+  // };
 
-  const handlePageSizeChange = (size: number) => {
-    if (!loading) {
-      onPageSizeChange?.(size);
-    }
-  };
+  // const handlePageSizeChange = (size: number) => {
+  //   if (!loading) {
+  //     onPageSizeChange?.(size);
+  //   }
+  // };
 
   const table = useReactTable({
     data,
@@ -152,7 +152,7 @@ export function DataTable<TData, TValue>({
           </TableBody>
         </Table>
       </div>
-      {!loading && enablePagination && (
+      {/* {!loading && enablePagination && (
         <DataTablePagination
           currentPage={pagingData?.pageIndex}
           pageSize={pagingData?.pageSize}
@@ -160,7 +160,8 @@ export function DataTable<TData, TValue>({
           onChange={handlePaginationChange}
           onPageSizeChange={handlePageSizeChange}
         />
-      )}
+      )} */}
+      <DataTablePagination table={table} />
     </div>
   );
 }

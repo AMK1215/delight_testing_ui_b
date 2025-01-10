@@ -1,23 +1,25 @@
 import { ColumnDef } from "@tanstack/react-table";
 import { DataTable } from "./components/data-table";
-import { Histories } from "./data";
-import { PagingData } from "./StaticTypes";
-import { useState } from "react";
-import { History } from "@/@types/history";
 import clsx from "clsx";
 import { Badge } from "@/components/ui/badge";
+import { TransactionHistory } from "@/@types/transaction-history";
+import { format } from "date-fns/format";
 
-const TransactionTable = () => {
-  const [pagingData, setPagingData] = useState<PagingData>({
-    total: 0,
-    pageIndex: 1,
-    pageSize: 10,
-  });
-  const columns: ColumnDef<History>[] = [
+interface TransactionTableProps {
+  data: TransactionHistory[];
+  type: "deposit" | "withdraw";
+}
+
+const TransactionTable = ({ data, type }: TransactionTableProps) => {
+  const columns: ColumnDef<TransactionHistory>[] = [
     {
       accessorKey: "",
       header: "No.",
-      cell: ({ row }) => row.index,
+      cell: ({ row }) => row.index + 1,
+    },
+    {
+      header: "Date",
+      cell: ({ row }) => format(row.original.datetime,"dd/mm/yyyy hh:mm aa")
     },
     {
       header: "Account Name",
@@ -29,7 +31,7 @@ const TransactionTable = () => {
     },
     {
       header: "Provider",
-      cell: ({ row }) => row.original.provider,
+      cell: ({ row }) => row.original.payment_type,
     },
     {
       header: "Status",
@@ -38,11 +40,11 @@ const TransactionTable = () => {
           variant="outline"
           className={clsx({
             "text-yellow-500 border border-yellow-500":
-              row.original.status === "pending",
+              row.original.status === "Pending",
             "text-red-500 border border-red-500":
-              row.original.status === "reject",
+              row.original.status === "Reject",
             "text-active border border-active":
-              row.original.status === "approve",
+              row.original.status === "Success",
           })}
         >
           {row.original.status}
@@ -54,18 +56,16 @@ const TransactionTable = () => {
       cell: ({ row }) => (
         <span
           className={clsx("font-bold", {
-            "text-yellow": row.original.type === "withdraw",
-            "text-active": row.original.type === "deposit",
+            "text-yellow": type === "withdraw",
+            "text-active": type === "deposit",
           })}
-        >{`${row.original.type === "deposit" ? "+" : "-"} ${
-          row.original.amount
-        }`}</span>
+        >{`${type === "deposit" ? "+" : "-"} ${row.original.amount}`}</span>
       ),
     },
   ];
   return (
     <div>
-      <DataTable data={Histories} columns={columns} />
+      <DataTable data={data} columns={columns} />
     </div>
   );
 };

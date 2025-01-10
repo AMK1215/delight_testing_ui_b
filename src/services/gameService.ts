@@ -29,7 +29,7 @@ const fetchGameProductsByGameType = async (game_type_id: number) => {
       `${ApiConfig.baseUrl}/${ApiConfig.gameProduct}/${game_type_id}`
     );
 
-    console.log(data)
+    console.log(data);
 
     return data.data as GameProduct;
   } catch (error) {
@@ -53,8 +53,22 @@ const fetchGamePlayHistory = async (
   }
 };
 
+const fetchHotGames = async () => {
+  try {
+    const { data } = await apiService.get(
+      `${ApiConfig.baseUrl}/${ApiConfig.hotGames}`
+    );
+
+    return data.data as Game[];
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
+
 export {
   fetchAllGamesByProviderAndType,
   fetchGameProductsByGameType,
   fetchGamePlayHistory,
+  fetchHotGames,
 };

@@ -32,7 +32,6 @@ const LoginPage = () => {
     register,
     handleSubmit,
     formState: { errors },
-    setError: setFormError,
   } = useForm<FormData>({
     resolver: zodResolver(formSchema),
   });

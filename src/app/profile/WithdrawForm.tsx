@@ -22,32 +22,18 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { fetchPaymentProviders } from "@/services/paymentProviderService";
 import { getMe } from "@/services/userService";
+import { withdrawWallet } from "@/services/walletService";
+import { toast } from "sonner";
+import { LucideLoader2 } from "lucide-react";
 
 interface WithdrawFormProps {
   onDialogClose: () => void;
 }
 
-const formSchema = z.object({
-  payment_type_id: z.string().min(1, { message: "It is required!" }),
-  amount: z.string().min(1, { message: "It is required!" }),
-  account_name: z.string().min(1, { message: "It is required!" }),
-  account_number: z.string().min(1, { message: "It is required!" }),
-});
-
 const WithdrawForm = ({ onDialogClose }: WithdrawFormProps) => {
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
-      payment_type_id: "",
-      amount: "",
-      account_name: "",
-      account_number: "",
-    },
-  });
-
   const { data = [] } = useQuery({
     queryKey: ["GET_PAYMENT_PROVIDER"],
     queryFn: fetchPaymentProviders,
@@ -58,8 +44,60 @@ const WithdrawForm = ({ onDialogClose }: WithdrawFormProps) => {
     queryFn: getMe,
   });
 
+  const formSchema = z.object({
+    payment_type_id: z.string().min(1, { message: "It is required!" }),
+    amount: z
+      .string()
+      .min(1, { message: "It is required!" })
+      .refine(
+        (value) => {
+          const amount = parseInt(value);
+          return amount <= Number(user?.balance ?? 0);
+        },
+        {
+          message: "Amount must be between 10,000 and your balance!",
+        }
+      ),
+    account_name: z.string().min(1, { message: "It is required!" }),
+    account_number: z.string().min(1, { message: "It is required!" }),
+  });
+
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      payment_type_id: "",
+      amount: "",
+      account_name: "",
+      account_number: "",
+    },
+  });
+
+  const { mutate: doWithdraw, isPending } = useMutation({
+    mutationFn: withdrawWallet,
+    onSuccess: () => {
+      onDialogClose();
+    },
+    onError: (error) => {
+      console.error(error);
+      toast(`${error.message}`, {
+        style: {
+          backgroundColor: "#FF4444",
+          color: "white",
+          borderRadius: "8px",
+          padding: "10px",
+          fontWeight: "bold",
+        },
+      });
+    },
+  });
+
   const onSubmit = (values: z.infer<typeof formSchema>) => {
-    console.log("Form submitted:", values);
+    doWithdraw({
+      account_name: values.account_name,
+      account_number: values.account_number,
+      amount: parseInt(values.amount),
+      payment_type_id: parseInt(values.payment_type_id),
+    });
   };
 
   return (
@@ -141,7 +179,6 @@ const WithdrawForm = ({ onDialogClose }: WithdrawFormProps) => {
                   placeholder="Enter Account Number"
                   {...field}
                   onKeyDown={(e) => {
-                    // Allow only numeric input
                     if (
                       !/^[0-9]+$/.test(e.key) &&
                       e.key !== "Backspace" &&
@@ -210,7 +247,11 @@ const WithdrawForm = ({ onDialogClose }: WithdrawFormProps) => {
             type="submit"
             className="bg-active text-black hover:text-white hover:bg-secondary hover:border hover:border-active"
           >
-            Submit
+            {isPending ? (
+              <LucideLoader2 className="animate-spin h-3 w-3" />
+            ) : (
+              "Submit"
+            )}
           </Button>
         </div>
       </form>

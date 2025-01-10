@@ -1,6 +1,5 @@
 "use client";
 
-import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import {
   fetchAllGamesByProviderAndType,
   fetchGameProductsByGameType,
@@ -53,7 +52,7 @@ const GameTypeView = () => {
   };
 
   return (
-    <div className="w-full  p-4 space-y-4">
+    <div className="w-full max-w-[99%] p-4 space-y-4">
       <div className="w-full">
         {isLoadingGameProducts ? (
           <TopTabSkeleton />
@@ -79,9 +78,6 @@ const GameTypeView = () => {
       <div className="grid gap-5 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 w-full">
         {isLoading || isFetching ? (
           <GameListSkeleton />
-        ) : data?.length === 0 ? (
-          // This will show when no games are returned
-          <div className="text-center text-gray-500">No games available.</div>
         ) : (
           data?.map((game, idx) => (
             <button

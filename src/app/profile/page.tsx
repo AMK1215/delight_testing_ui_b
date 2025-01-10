@@ -3,7 +3,6 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { PiHandDeposit, PiHandWithdraw } from "react-icons/pi";
-import TransactionHistoryView from "./TransactionHistory";
 import GameLogs from "./GameLogs";
 import Tabs from "./components/tabs";
 import {
@@ -17,11 +16,17 @@ import { useState } from "react";
 import WithdrawForm from "./WithdrawForm";
 import { useQuery } from "@tanstack/react-query";
 import { getMe } from "@/services/userService";
+import DepositHistoryView from "./DepositHistoryView";
+import WithdrawHistoryView from "./WithdrawHistoryView";
 
 const tabs = [
   {
-    label: "Transaction History",
-    content: <TransactionHistoryView />,
+    label: "Deposit History",
+    content: <DepositHistoryView />,
+  },
+  {
+    label: "Withdraw History",
+    content: <WithdrawHistoryView />,
   },
   {
     label: "Game Logs",

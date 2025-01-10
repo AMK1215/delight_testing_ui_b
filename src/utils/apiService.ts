@@ -10,30 +10,21 @@ const apiService = axios.create({
   },
 });
 
-const getCsrfToken = (): string | null => {
-  const csrfCookie = document.cookie
-    .split(";")
-    .find((cookie) => cookie.trim().startsWith("csrf-token="));
-  if (csrfCookie) {
-    return csrfCookie.split("=")[1] ?? null;
-  }
-  return null;
-};
 const getAuthToken = (): string | null => {
   return localStorage.getItem("token");
 };
+
+const logout = () => {
+  localStorage.removeItem("token");
+};
+
 apiService.interceptors.request.use(
   (config: InternalAxiosRequestConfig) => {
     const token = getAuthToken();
-    const csrfToken = getCsrfToken();
     if (token) {
       config.headers["Authorization"] = `Bearer ${token}`;
     }
-    if (csrfToken) {
-      config.headers["X-CSRF-TOKEN"] = csrfToken;
-    }
 
-    // Debugging: log headers
     console.log(config.headers);
 
     return config;
@@ -49,7 +40,7 @@ apiService.interceptors.response.use(
   },
   (error) => {
     if (error.response?.status === 401) {
-      // logOut();
+      logout();
     }
     return Promise.reject(error);
   }

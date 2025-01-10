@@ -15,8 +15,6 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
   useEffect(() => {
     if (!isLoading && !user) {
       router.push("/login");
-    } else if (!isLoading) {
-      router.push("/unauthorized");
     }
   }, [user, isLoading, router]);
 
@@ -24,7 +22,9 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
     return <div>Loading...</div>;
   }
 
-  if (!user) return null;
+  if (!user) {
+    return <div>Unauthorized access</div>;
+  }
 
   return <>{children}</>;
 };

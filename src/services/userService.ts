@@ -11,7 +11,11 @@ const getMe = async () => {
     return data.data as User;
   } catch (error) {
     console.error(error);
-    throw error;
+    if (get(error, "response", undefined)) {
+      console.error("Error Status Code:", get(error, "response.status"));
+      console.error("Error Response Data:", get(error, "response.data"));
+    }
+    throw new Error(`${get(error, "response.data.message")}`);
   }
 };
 
@@ -36,7 +40,11 @@ const signIn = async ({
     };
   } catch (error) {
     console.error(error);
-    throw error;
+    if (get(error, "response", undefined)) {
+      console.error("Error Status Code:", get(error, "response.status"));
+      console.error("Error Response Data:", get(error, "response.data"));
+    }
+    throw new Error(`${get(error, "response.data.message")}`);
   }
 };
 
@@ -45,7 +53,11 @@ const logOut = async () => {
     await apiService.post(`${ApiConfig.baseUrl}/${ApiConfig.logout}`);
   } catch (error) {
     console.error(error);
-    throw error;
+    if (get(error, "response", undefined)) {
+      console.error("Error Status Code:", get(error, "response.status"));
+      console.error("Error Response Data:", get(error, "response.data"));
+    }
+    throw new Error(`${get(error, "response.data.message")}`);
   }
 };
 
