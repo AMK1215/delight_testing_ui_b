@@ -3,7 +3,7 @@
 import { GameType } from "@/@types/gametype";
 import TabSkeleton from "@/components/skeletons/tabSekeleton";
 import { Input } from "@/components/ui/input";
-import Tabs from "@/components/ui/tabs";
+import Tabs from "@/components/ui/custom_tabs";
 import { fetchGameType } from "@/services/gameTypeServices";
 import { useQuery } from "@tanstack/react-query";
 import { SearchIcon } from "lucide-react";
@@ -28,6 +28,9 @@ const TabsLayout = ({ children }: TabsLayoutProps) => {
     queryKey: ["GET_GAME_TYPES"],
     queryFn: fetchGameType,
   });
+
+
+  console.log(data)
 
   const dynamicTabs = data?.map((gameType: GameType) => ({
     label: gameType.name,

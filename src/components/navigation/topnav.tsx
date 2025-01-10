@@ -13,14 +13,14 @@ import {
 import { useEffect, useState } from "react";
 import SearchGames from "../widgets/SearchGames";
 import MobileSearchGames from "../widgets/MobileSearchGames";
-import { useRouter } from "next/navigation";
+// import { useRouter } from "next/navigation";
 
 interface TopNavProps {
   className?: string;
 }
 
 const TopNav = ({ className }: TopNavProps) => {
-  const router = useRouter();
+  // const router = useRouter();
   const [language, setLanguage] = useState<string>("english");
 
   useEffect(() => {
@@ -105,7 +105,7 @@ const TopNav = ({ className }: TopNavProps) => {
               </DropdownMenuContent>
             </DropdownMenu>
           </div>
-          <div>
+          {/* <div>
             <Button
               className="border bg-active border-active text-black hover:text-active font-bold rounded-full"
               onClick={() => router.push("/register")}
@@ -120,7 +120,7 @@ const TopNav = ({ className }: TopNavProps) => {
             >
               Login
             </Button>
-          </div>
+          </div> */}
         </div>
       </div>
     </header>

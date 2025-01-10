@@ -5,7 +5,7 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { ReactNode } from "react";
 import { RiAdvertisementLine } from "react-icons/ri";
-import { Button } from "../ui/button";
+// import { Button } from "../ui/button";
 
 interface SideMenuItem {
   label: string;
@@ -69,7 +69,7 @@ const SideMenu = ({ className }: SideMenuProps) => {
             <span className="">APP NAME</span>
           </Link>
         </div>
-        <div className="bg-secondary rounded-md shadow flex flex-col justify-center items-center p-5 m-4 space-y-3">
+        {/* <div className="bg-secondary rounded-md shadow flex flex-col justify-center items-center p-5 m-4 space-y-3">
           <span className="text-lg">Welcome to Login</span>
           <Button
             className="border border-active text-active rounded-full"
@@ -77,7 +77,7 @@ const SideMenu = ({ className }: SideMenuProps) => {
           >
             Login
           </Button>
-        </div>
+        </div> */}
         <div className="flex-1">
           <nav className="grid items-start px-4 text-sm font-medium space-y-2">
             {sideMenuItems.map((item, idx) => {

@@ -1,20 +1,20 @@
 "use client";
 
-import { useQuery } from "@tanstack/react-query";
+// import { useQuery } from "@tanstack/react-query";
 import TabsLayout from "../components/layout/TabsLayout";
 import HomeLayout from "@/components/layout/HomeLayout";
-import { fetchGameProviders } from "@/services/gameProviderService";
-import { Card, CardContent } from "@/components/ui/card";
+// import { fetchGameProviders } from "@/services/gameProviderService";
+// import { Card, CardContent } from "@/components/ui/card";
 
 const HomePage = () => {
-  const { data, isLoading } = useQuery({
-    queryKey: ["GET_GAME_PROVIDERS"],
-    queryFn: fetchGameProviders,
-  });
+  // const { data, isLoading } = useQuery({
+  //   queryKey: ["GET_GAME_PROVIDERS"],
+  //   queryFn: fetchGameProviders,
+  // });
   return (
     <HomeLayout>
       <TabsLayout>
-        <div className="space-y-5 px-5">
+        {/* <div className="space-y-5 px-5">
           <div className="space-y-3">
             <div>
               <div className="inline-flex flex-row space-x-3 bg-black w-auto">
@@ -68,7 +68,8 @@ const HomePage = () => {
               ))}
             </div>
           </div>
-        </div>
+        </div> */}
+        <></>
       </TabsLayout>
     </HomeLayout>
   );
