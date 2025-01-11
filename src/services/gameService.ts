@@ -29,8 +29,6 @@ const fetchGameProductsByGameType = async (game_type_id: number) => {
       `${ApiConfig.baseUrl}/${ApiConfig.gameProduct}/${game_type_id}`
     );
 
-    console.log(data);
-
     return data.data as GameProduct;
   } catch (error) {
     console.error(error);

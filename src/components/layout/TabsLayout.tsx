@@ -29,9 +29,6 @@ const TabsLayout = ({ children }: TabsLayoutProps) => {
     queryFn: fetchGameType,
   });
 
-
-  console.log(data)
-
   const dynamicTabs = data?.map((gameType: GameType) => ({
     label: gameType.name,
     route: `/game-type/${gameType.id}`,

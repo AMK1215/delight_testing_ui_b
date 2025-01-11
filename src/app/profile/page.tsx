@@ -3,7 +3,6 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { PiHandDeposit, PiHandWithdraw } from "react-icons/pi";
-import GameLogs from "./GameLogs";
 import Tabs from "./components/tabs";
 import {
   Dialog,
@@ -18,6 +17,7 @@ import { useQuery } from "@tanstack/react-query";
 import { getMe } from "@/services/userService";
 import DepositHistoryView from "./DepositHistoryView";
 import WithdrawHistoryView from "./WithdrawHistoryView";
+import GameHistoryView from "./GameHistoryView";
 
 const tabs = [
   {
@@ -30,7 +30,7 @@ const tabs = [
   },
   {
     label: "Game Logs",
-    content: <GameLogs />,
+    content: <GameHistoryView />,
   },
 ];
 

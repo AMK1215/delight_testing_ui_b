@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -24,9 +24,10 @@ import {
 } from "@/components/ui/select";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { fetchPaymentProviders } from "@/services/paymentProviderService";
-import { LucideLoader2, XIcon } from "lucide-react";
+import { CheckIcon, CopyIcon, LucideLoader2, XIcon } from "lucide-react";
 import { depositWallet } from "@/services/walletService";
 import { toast } from "sonner";
+import { CopyToClipboard } from "react-copy-to-clipboard";
 
 interface DepositFormProps {
   onDialogClose: () => void;
@@ -47,6 +48,8 @@ const formSchema = z.object({
 });
 
 const DepositForm = ({ onDialogClose }: DepositFormProps) => {
+  const [copied, setCopied] = useState(false);
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -116,6 +119,16 @@ const DepositForm = ({ onDialogClose }: DepositFormProps) => {
                         {selectedProvider.account_number}
                       </span>
                     </div>
+                    <CopyToClipboard
+                      text={selectedProvider.account_number}
+                      onCopy={() => setCopied(true)}
+                    >
+                      {copied ? (
+                        <CheckIcon className="h-4 w-4 text-green-500" />
+                      ) : (
+                        <CopyIcon className="h-4 w-4" />
+                      )}
+                    </CopyToClipboard>
                     <button
                       type="button"
                       onClick={() => field.onChange(undefined)}

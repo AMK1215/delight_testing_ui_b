@@ -46,8 +46,7 @@ const LoginPage = () => {
 
   const { mutate: logIn, isPending } = useMutation({
     mutationFn: signIn,
-    onSuccess: ({ user, token }) => {
-      console.log(user);
+    onSuccess: ({ token }) => {
       localStorage.setItem("token", token);
       router.push("/");
     },
