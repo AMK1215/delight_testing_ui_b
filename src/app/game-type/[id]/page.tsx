@@ -57,12 +57,12 @@ const GameTypeView = () => {
         {isLoadingGameProducts ? (
           <TopTabSkeleton />
         ) : (
-          <div className="flex gap-4 text-green-400 overflow-x-auto no-scrollbar">
+          <div className="flex gap-2 sm:gap-4 text-green-400 overflow-x-auto no-scrollbar">
             {gameProducts?.products.map((p, index) => (
               <button
                 key={index}
                 onClick={() => handleTabClick(p.id)}
-                className={`flex items-center gap-2 px-4 py-1 rounded-lg hover:shadow-lg hover:border hover:border-active ${
+                className={`text-sm flex items-center gap-2 px-3 text-nowrap py-2 rounded-lg hover:shadow-lg hover:border hover:border-active ${
                   tabValue === p.id
                     ? "bg-secondary"
                     : "bg-transparent hover:bg-secondary"
