@@ -5,6 +5,8 @@ import SideMenu from "./navigation/sidemenu";
 import TopNav from "./navigation/topnav";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect } from "react";
+import Loading from "./ui/loading";
+import { isEmpty } from "lodash";
 
 interface AuthProviderProps {
   children: React.ReactNode;
@@ -22,14 +24,11 @@ const AuthGuard = ({ children }: AuthProviderProps) => {
     if (!isLoading && user && isAuthRoute) {
       router.push("/");
     }
+    if (isEmpty(localStorage.getItem("token"))) router.push("/login");
   }, [user, isLoading, isAuthRoute, router]);
 
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
-
   return (
-    <>
+    <Loading loading={isLoading}>
       {isAuthRoute ? (
         <main className="min-h-screen w-full">
           <div className="h-full w-full">{children}</div>
@@ -45,7 +44,7 @@ const AuthGuard = ({ children }: AuthProviderProps) => {
           </div>
         </main>
       )}
-    </>
+    </Loading>
   );
 };
 

@@ -1,10 +1,13 @@
 "use client";
 
-import { ContactIcon, GiftIcon, HomeIcon, UserIcon } from "lucide-react";
+import { fetchContractInformation } from "@/services/contactService";
+import { useQuery } from "@tanstack/react-query";
+import { GiftIcon, HomeIcon, UserIcon } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { ReactNode } from "react";
 import { RiAdvertisementLine } from "react-icons/ri";
+import { Skeleton } from "../ui/skeleton";
 
 interface SideMenuItem {
   label: string;
@@ -33,11 +36,6 @@ const sideMenuItems = [
     path: "/profile",
     icon: <UserIcon className="h-5 w-5" />,
   },
-  {
-    label: "Contact",
-    path: "/contact",
-    icon: <ContactIcon className="h-5 w-5" />,
-  },
 ] as SideMenuItem[];
 
 interface SideMenuProps {
@@ -52,12 +50,16 @@ const SideMenu = ({ className }: SideMenuProps) => {
     pathname.startsWith("/hot-games") ||
     pathname.startsWith("/game-type");
 
+  const { data: contact, isLoading: isLoadingContact } = useQuery({
+    queryKey: ["GET_CONTACT_INFO"],
+    queryFn: fetchContractInformation,
+  });
 
   return (
     <div
       className={`hidden border-r bg-muted/40 lg:block border-gray-800 ${className}`}
     >
-      <div className="flex flex-col gap-2">
+      <div className="flex flex-col gap-2 justify-between h-full">
         <div className="flex h-[60px] items-center px-6">
           <Link
             href="/"
@@ -67,7 +69,7 @@ const SideMenu = ({ className }: SideMenuProps) => {
             <span className="">APP NAME</span>
           </Link>
         </div>
-        <div className="flex-1">
+        <div className="flex-grow">
           <nav className="grid items-start px-4 text-sm font-medium space-y-2">
             {sideMenuItems.map((item, idx) => {
               const isActive =
@@ -89,6 +91,40 @@ const SideMenu = ({ className }: SideMenuProps) => {
               );
             })}
           </nav>
+        </div>
+        <div className="mb-7">
+          {isLoadingContact ? (
+            <div className="flex flex-row items-center justify-center w-full space-x-4">
+              <Skeleton className="h-7 w-7 rounded-md" />
+              <Skeleton className="h-7 w-7 rounded-md" />
+              <Skeleton className="h-7 w-7 rounded-md" />
+            </div>
+          ) : (
+            <div className="flex flex-row items-center justify-center w-full space-x-4">
+              {contact?.map((c, idx) => (
+                <Link key={idx} href={c.value} target="_blank">
+                  {c.name === "Facebook" && (
+                    <img
+                      src={"/icons/facebook.png"}
+                      className="h-8 w-8 rounded-full"
+                    />
+                  )}
+                  {c.name === "Viber" && (
+                    <img
+                      src={"/icons/viber.png"}
+                      className="h-8 w-8 rounded-full"
+                    />
+                  )}
+                  {c.name === "Telegram" && (
+                    <img
+                      src={"/icons/telegram.png"}
+                      className="h-8 w-8 rounded-full"
+                    />
+                  )}
+                </Link>
+              ))}
+            </div>
+          )}
         </div>
       </div>
     </div>

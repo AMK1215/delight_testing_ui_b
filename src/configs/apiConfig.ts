@@ -18,4 +18,5 @@ export const ApiConfig = {
   logout: "logout",
   changePassword: "change-password",
   videoAds: "videoads",
+  contact: "contact"
 };
