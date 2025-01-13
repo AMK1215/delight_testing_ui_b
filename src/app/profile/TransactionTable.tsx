@@ -4,6 +4,8 @@ import clsx from "clsx";
 import { Badge } from "@/components/ui/badge";
 import { TransactionHistory } from "@/@types/transaction-history";
 import { format } from "date-fns/format";
+import { useLanguage } from "@/context/LanguageContext";
+import { translations } from "@/configs/translations";
 
 interface TransactionTableProps {
   data: TransactionHistory[];
@@ -11,22 +13,24 @@ interface TransactionTableProps {
 }
 
 const TransactionTable = ({ data, type }: TransactionTableProps) => {
+  const { language } = useLanguage();
+
   const columns: ColumnDef<TransactionHistory>[] = [
     {
       accessorKey: "",
-      header: "No.",
+      header: translations.no[language],
       cell: ({ row }) => row.index + 1,
     },
     {
-      header: "Date",
+      header: translations.date[language],
       cell: ({ row }) => format(row.original.datetime,"dd/mm/yyyy hh:mm aa")
     },
     {
-      header: "Account Name",
+      header: translations.accountName[language],
       cell: ({ row }) => row.original.account_name,
     },
     {
-      header: "Account Number",
+      header: translations.accountNumber[language],
       cell: ({ row }) => row.original.account_number,
     },
     {
@@ -52,7 +56,7 @@ const TransactionTable = ({ data, type }: TransactionTableProps) => {
       ),
     },
     {
-      header: "Amount",
+      header: translations.amount[language],
       cell: ({ row }) => (
         <span
           className={clsx("font-bold", {

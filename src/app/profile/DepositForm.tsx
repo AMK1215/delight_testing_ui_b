@@ -28,6 +28,8 @@ import { CheckIcon, CopyIcon, LucideLoader2, XIcon } from "lucide-react";
 import { depositWallet } from "@/services/walletService";
 import { toast } from "sonner";
 import { CopyToClipboard } from "react-copy-to-clipboard";
+import { translations } from "@/configs/translations";
+import { useLanguage } from "@/context/LanguageContext";
 
 interface DepositFormProps {
   onDialogClose: () => void;
@@ -48,6 +50,8 @@ const formSchema = z.object({
 });
 
 const DepositForm = ({ onDialogClose }: DepositFormProps) => {
+  const { language } = useLanguage();
+
   const [copied, setCopied] = useState(false);
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -182,12 +186,11 @@ const DepositForm = ({ onDialogClose }: DepositFormProps) => {
           control={form.control}
           render={({ field }) => (
             <FormItem>
-              <Label htmlFor="amount">Amount</Label>
+              <Label htmlFor="amount">{translations.amount[language]}</Label>
               <FormControl>
                 <Input
                   type="text"
                   id="amount"
-                  placeholder="Enter Amount"
                   {...field}
                   onKeyDown={(e) => {
                     // Allow only numeric input

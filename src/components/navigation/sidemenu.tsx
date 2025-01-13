@@ -8,6 +8,8 @@ import { usePathname } from "next/navigation";
 import { ReactNode } from "react";
 import { RiAdvertisementLine } from "react-icons/ri";
 import { Skeleton } from "../ui/skeleton";
+import { useLanguage } from "@/context/LanguageContext";
+import { translations } from "@/configs/translations";
 
 interface SideMenuItem {
   label: string;
@@ -15,35 +17,13 @@ interface SideMenuItem {
   icon: ReactNode;
 }
 
-const sideMenuItems = [
-  {
-    label: "Home",
-    path: "/",
-    icon: <HomeIcon className="h-5 w-5" />,
-  },
-  {
-    label: "Video Ads",
-    path: "/video-ads",
-    icon: <RiAdvertisementLine className="h-5 w-5" />,
-  },
-  {
-    label: "Promotions",
-    path: "/promotions",
-    icon: <GiftIcon className="h-5 w-5" />,
-  },
-  {
-    label: "Account",
-    path: "/profile",
-    icon: <UserIcon className="h-5 w-5" />,
-  },
-] as SideMenuItem[];
-
 interface SideMenuProps {
   className?: string;
 }
 
 const SideMenu = ({ className }: SideMenuProps) => {
   const pathname = usePathname();
+  const { language } = useLanguage();
 
   const isHomeActive =
     pathname === "/" ||
@@ -54,6 +34,29 @@ const SideMenu = ({ className }: SideMenuProps) => {
     queryKey: ["GET_CONTACT_INFO"],
     queryFn: fetchContractInformation,
   });
+
+  const sideMenuItems = [
+    {
+      label: translations.home[language],
+      path: "/",
+      icon: <HomeIcon className="h-5 w-5" />,
+    },
+    {
+      label: translations.videoAds[language],
+      path: "/video-ads",
+      icon: <RiAdvertisementLine className="h-5 w-5" />,
+    },
+    {
+      label: translations.promotions[language],
+      path: "/promotions",
+      icon: <GiftIcon className="h-5 w-5" />,
+    },
+    {
+      label: translations.account[language],
+      path: "/profile",
+      icon: <UserIcon className="h-5 w-5" />,
+    },
+  ] as SideMenuItem[];
 
   return (
     <div

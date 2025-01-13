@@ -4,6 +4,8 @@ import { Accordion, AccordionContent } from "@radix-ui/react-accordion";
 import { AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import clsx from "clsx";
 import { TransactionHistory } from "@/@types/transaction-history";
+import { translations } from "@/configs/translations";
+import { useLanguage } from "@/context/LanguageContext";
 
 interface TransactionMobileViewProps {
   data: TransactionHistory[];
@@ -11,6 +13,8 @@ interface TransactionMobileViewProps {
 }
 
 const TransactionMobileView = ({ data, type }: TransactionMobileViewProps) => {
+  const { language } = useLanguage();
+
   return (
     <div className="space-y-2">
       {data.length > 0 ? (
@@ -65,9 +69,9 @@ const TransactionMobileView = ({ data, type }: TransactionMobileViewProps) => {
               </AccordionTrigger>
               <AccordionContent>
                 <div className="grid grid-cols-2 grid-rows-3 gap-y-1 gap-x-5 text-sm border-t pt-3">
-                  <div>Account Name</div>
+                  <div>{translations.accountName[language]}</div>
                   <div>: {history.account_name}</div>
-                  <div>Account Number</div>
+                  <div>{translations.accountNumber[language]}</div>
                   <div>: {history.account_number}</div>
                   <div>Payment Provider</div>
                   <div>: {history.payment_type}</div>

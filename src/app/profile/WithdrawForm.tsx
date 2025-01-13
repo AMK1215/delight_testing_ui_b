@@ -28,12 +28,16 @@ import { getMe } from "@/services/userService";
 import { withdrawWallet } from "@/services/walletService";
 import { toast } from "sonner";
 import { LucideLoader2 } from "lucide-react";
+import { useLanguage } from "@/context/LanguageContext";
+import { translations } from "@/configs/translations";
 
 interface WithdrawFormProps {
   onDialogClose: () => void;
 }
 
 const WithdrawForm = ({ onDialogClose }: WithdrawFormProps) => {
+  const { language } = useLanguage();
+
   const { data = [] } = useQuery({
     queryKey: ["GET_PAYMENT_PROVIDER"],
     queryFn: fetchPaymentProviders,
@@ -104,7 +108,7 @@ const WithdrawForm = ({ onDialogClose }: WithdrawFormProps) => {
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
         <div className="w-full rounded-lg bg-active text-black flex flex-row px-8 py-5 items-center justify-between">
-          <span>Balance</span>
+          <span>{translations.balance[language]}</span>
           <span className="text-lg font-bold">{user?.balance ?? 0}</span>
         </div>
         <FormField
@@ -149,15 +153,11 @@ const WithdrawForm = ({ onDialogClose }: WithdrawFormProps) => {
           control={form.control}
           render={({ field }) => (
             <FormItem>
-              <Label htmlFor="account_name">Account Name</Label>
+              <Label htmlFor="account_name">
+                {translations.accountNumber[language]}
+              </Label>
               <FormControl>
-                <Input
-                  type="text"
-                  id="refrence_no"
-                  placeholder="Enter Account Name"
-                  className="border border-input"
-                  {...field}
-                />
+                <Input type="text" className="border border-input" {...field} />
               </FormControl>
               <FormMessage>
                 {form.formState.errors?.account_name?.message}
@@ -171,12 +171,12 @@ const WithdrawForm = ({ onDialogClose }: WithdrawFormProps) => {
           control={form.control}
           render={({ field }) => (
             <FormItem>
-              <Label htmlFor="account_number">Account Number</Label>
+              <Label htmlFor="account_number">
+                {translations.accountNumber[language]}
+              </Label>
               <FormControl>
                 <Input
                   type="text"
-                  id="amount"
-                  placeholder="Enter Account Number"
                   {...field}
                   onKeyDown={(e) => {
                     if (
@@ -210,7 +210,6 @@ const WithdrawForm = ({ onDialogClose }: WithdrawFormProps) => {
                 <Input
                   type="text"
                   id="amount"
-                  placeholder="Enter Amount"
                   {...field}
                   onKeyDown={(e) => {
                     // Allow only numeric input
