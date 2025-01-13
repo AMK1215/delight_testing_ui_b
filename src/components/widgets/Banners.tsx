@@ -25,7 +25,7 @@ const Banners = () => {
               <CarouselItem key={index}>
                 <img
                   src={item.img_url}
-                  className="bg-contain w-full h-[330px] md:h-[390px]"
+                  className="bg-contain w-full h-[330px] md:h-[390px] sm:h-[250px]"
                 />
               </CarouselItem>
             );

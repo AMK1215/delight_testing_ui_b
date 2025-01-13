@@ -19,5 +19,5 @@ export const ApiConfig = {
   changePassword: "change-password",
   videoAds: "videoads",
   contact: "contact",
-  banner: "banner"
+  banner: "banner",
 };
