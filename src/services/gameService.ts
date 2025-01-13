@@ -3,6 +3,7 @@ import { GameProduct } from "@/@types/game-product";
 import { PlayHistory } from "@/@types/play-history";
 import { ApiConfig } from "@/configs/apiConfig";
 import { apiService } from "@/utils/apiService";
+import get from "lodash/get";
 
 const fetchAllGamesByProviderAndType = async ({
   game_type_id,
@@ -64,9 +65,32 @@ const fetchHotGames = async () => {
   }
 };
 
+const fetchGameUrl = async (code: string) => {
+  try {
+    const { data } = await apiService.post(
+      `${ApiConfig.baseUrl}/${ApiConfig.getGameInfo}`,
+      {
+        game_code: code,
+      }
+    );
+    return {
+      url: get(data.message, "url", "") as string,
+      ticket: get(data.message, "ticket", "") as string,
+    };
+  } catch (error) {
+    console.error(error);
+    if (get(error, "response", undefined)) {
+      console.error("Error Status Code:", get(error, "response.status"));
+      console.error("Error Response Data:", get(error, "response.data"));
+    }
+    throw new Error(`${get(error, "response.data.data")}`);
+  }
+};
+
 export {
   fetchAllGamesByProviderAndType,
   fetchGameProductsByGameType,
   fetchGamePlayHistory,
   fetchHotGames,
+  fetchGameUrl,
 };

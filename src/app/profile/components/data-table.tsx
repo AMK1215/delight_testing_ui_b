@@ -118,7 +118,7 @@ export function DataTable<TData, TValue>({
                 <TableRow key={`skeleton-row-${rowIndex}`}>
                   {columns.map((_, colIndex) => (
                     <TableCell key={`skeleton-cell-${colIndex}`}>
-                      <Skeleton className="h-5 w-full" />
+                      <Skeleton className="h-5 w-full bg-secondary" />
                     </TableCell>
                   ))}
                 </TableRow>

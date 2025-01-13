@@ -1,5 +1,4 @@
 import HomeLayout from "@/components/layout/HomeLayout";
-import TabsLayout from "../../components/layout/TabsLayout";
 
 export default function HotGamesLayout({
   children,
@@ -8,7 +7,7 @@ export default function HotGamesLayout({
 }) {
   return (
     <HomeLayout>
-      <TabsLayout>{children}</TabsLayout>
+      {children}
     </HomeLayout>
   );
 }

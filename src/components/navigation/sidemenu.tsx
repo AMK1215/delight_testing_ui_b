@@ -95,9 +95,9 @@ const SideMenu = ({ className }: SideMenuProps) => {
         <div className="mb-7">
           {isLoadingContact ? (
             <div className="flex flex-row items-center justify-center w-full space-x-4">
-              <Skeleton className="h-7 w-7 rounded-md" />
-              <Skeleton className="h-7 w-7 rounded-md" />
-              <Skeleton className="h-7 w-7 rounded-md" />
+              <Skeleton className="h-7 w-7 rounded-md bg-secondary" />
+              <Skeleton className="h-7 w-7 rounded-md bg-secondary" />
+              <Skeleton className="h-7 w-7 rounded-md bg-secondary" />
             </div>
           ) : (
             <div className="flex flex-row items-center justify-center w-full space-x-4">

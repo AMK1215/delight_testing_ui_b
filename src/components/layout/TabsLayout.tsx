@@ -10,6 +10,8 @@ import { SearchIcon } from "lucide-react";
 
 interface TabsLayoutProps {
   children: React.ReactNode;
+  searchValue?: string;
+  onChangeInput?: (v: string) => void;
 }
 
 const staticTabs = [
@@ -23,7 +25,11 @@ const staticTabs = [
   },
 ];
 
-const TabsLayout = ({ children }: TabsLayoutProps) => {
+const TabsLayout = ({
+  children,
+  searchValue = "",
+  onChangeInput,
+}: TabsLayoutProps) => {
   const { data, isLoading } = useQuery({
     queryKey: ["GET_GAME_TYPES"],
     queryFn: fetchGameType,
@@ -37,7 +43,7 @@ const TabsLayout = ({ children }: TabsLayoutProps) => {
   const tabs = [...staticTabs, ...(dynamicTabs || [])];
 
   return (
-    <div className="h-full w-full">
+    <div className="h-full w-full space-y-2">
       <div className="flex flex-row justify-between items-center px-3">
         <div className="hidden md:block">
           {isLoading ? (
@@ -48,8 +54,13 @@ const TabsLayout = ({ children }: TabsLayoutProps) => {
         </div>
         <div>
           <div className="flex flex-row space-x-2 items-center border border-input px-5 rounded-full bg-secondary ">
-            <SearchIcon className="h-4 w-4"/>
-            <Input placeholder="Search" className="appearance-none bg-secondary"/>
+            <SearchIcon className="h-4 w-4" />
+            <Input
+              placeholder="Search"
+              className="appearance-none bg-secondary"
+              value={searchValue}
+              onChange={(e) => onChangeInput?.(e.target.value)}
+            />
           </div>
         </div>
       </div>
