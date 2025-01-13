@@ -10,34 +10,49 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
-import { useEffect, useState } from "react";
 import SearchGames from "../widgets/SearchGames";
 import MobileSearchGames from "../widgets/MobileSearchGames";
-// import { useRouter } from "next/navigation";
+import { useLanguage } from "@/context/LanguageContext";
+import { Language } from "@/@types/language";
 
 interface TopNavProps {
   className?: string;
 }
 
+interface LangOptions {
+  label: string;
+  value: Language;
+  icon: string;
+}
+
+const language_options = [
+  {
+    icon: "my-icon.png",
+    label: "Myanmar",
+    value: "my",
+  },
+  {
+    icon: "en-icon.png",
+    label: "English",
+    value: "en",
+  },
+  {
+    icon: "th-icon.png",
+    label: "Thailand",
+    value: "th",
+  },
+  {
+    icon: "zh-icon.png",
+    label: "Chinese",
+    value: "zh",
+  },
+] as LangOptions[];
+
 const TopNav = ({ className }: TopNavProps) => {
-  // const router = useRouter();
-  const [language, setLanguage] = useState<string>("english");
+  const { language, setLanguage } = useLanguage();
 
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      const savedLanguage = localStorage.getItem("language");
-      if (savedLanguage) {
-        setLanguage(savedLanguage);
-      }
-    }
-  }, []);
-
-  const onSelectLanguage = (value: string) => {
-    if (typeof window !== "undefined") {
-      localStorage.setItem("language", value);
-      setLanguage(value);
-      window.location.reload();
-    }
+  const onSelectLanguage = (value: Language) => {
+    setLanguage(value);
   };
 
   return (
@@ -73,34 +88,24 @@ const TopNav = ({ className }: TopNavProps) => {
                   className="h-5 w-6 rounded-full object-cover"
                 />
               </DropdownMenuTrigger>
-              <DropdownMenuContent className="w-56">
+              <DropdownMenuContent className="w-56 bg-secondary">
                 <DropdownMenuGroup>
-                  <DropdownMenuItem
-                    className="hover:bg-secondary"
-                    onClick={() => onSelectLanguage("myanmar")}
-                  >
-                    <div className="flex flex-row justify-between w-full">
-                      <span>Myanmar</span>
-                      <img
-                        alt="myanmar"
-                        src="/icons/myanmar-icon.png"
-                        className="h-5 w-6"
-                      />
-                    </div>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem
-                    className="hover:bg-secondary"
-                    onClick={() => onSelectLanguage("english")}
-                  >
-                    <div className="flex flex-row justify-between w-full">
-                      <span>English</span>
-                      <img
-                        alt="english"
-                        src="/icons/english-icon.png"
-                        className="h-5 w-6"
-                      />
-                    </div>
-                  </DropdownMenuItem>
+                  {language_options.map((lang, idx) => (
+                    <DropdownMenuItem
+                      key={idx}
+                      className="hover:border hover:border-active"
+                      onClick={() => onSelectLanguage(lang.value)}
+                    >
+                      <div className="flex flex-row justify-between w-full">
+                        <span>{lang.label}</span>
+                        <img
+                          alt={lang.value}
+                          src={`/icons/${lang.icon}`}
+                          className="h-5 w-6"
+                        />
+                      </div>
+                    </DropdownMenuItem>
+                  ))}
                 </DropdownMenuGroup>
               </DropdownMenuContent>
             </DropdownMenu>

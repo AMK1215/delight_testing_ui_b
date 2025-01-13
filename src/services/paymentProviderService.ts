@@ -1,34 +1,22 @@
 import { PaymentProvider } from "@/@types/payment-provider";
+import { ApiConfig } from "@/configs/apiConfig";
+import { apiService } from "@/utils/apiService";
+import get from "lodash/get";
 
 const fetchPaymentProviders = async () => {
-  const data = [
-    {
-      id: 19,
-      account_name: "Test Account",
-      account_number: "12345678",
-      payment_type_id: 6,
-      payment_type: "KBZ Pay",
-      image: "https://agdashboard.pro/assets/img/paymentType/kpay.png",
-    },
-    {
-      id: 20,
-      account_name: "Test",
-      account_number: "12345678",
-      payment_type_id: 2,
-      payment_type: "AYA Pay",
-      image: "https://agdashboard.pro/assets/img/paymentType/aya_pay.png",
-    },
-    {
-      id: 22,
-      account_name: "Mr.Kaung",
-      account_number: "97542106",
-      payment_type_id: 4,
-      payment_type: "CB Pay",
-      image: "https://agdashboard.pro/assets/img/paymentType/cb_pay.png",
-    },
-  ];
-
-  return data as PaymentProvider[];
+  try {
+    const { data } = await apiService.get(
+      `${ApiConfig.baseUrl}/${ApiConfig.paymentProvider}`
+    );
+    return data.data as PaymentProvider[];
+  } catch (error) {
+    console.error(error);
+    if (get(error, "response", undefined)) {
+      console.error("Error Status Code:", get(error, "response.status"));
+      console.error("Error Response Data:", get(error, "response.data"));
+    }
+    throw new Error(`${get(error, "response.data.message")}`);
+  }
 };
 
 export { fetchPaymentProviders };

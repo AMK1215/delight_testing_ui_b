@@ -18,23 +18,12 @@ import { getMe } from "@/services/userService";
 import DepositHistoryView from "./DepositHistoryView";
 import WithdrawHistoryView from "./WithdrawHistoryView";
 import GameHistoryView from "./GameHistoryView";
-
-const tabs = [
-  {
-    label: "Deposit History",
-    content: <DepositHistoryView />,
-  },
-  {
-    label: "Withdraw History",
-    content: <WithdrawHistoryView />,
-  },
-  {
-    label: "Game Logs",
-    content: <GameHistoryView />,
-  },
-];
+import { useLanguage } from "@/context/LanguageContext";
+import { translations } from "@/configs/translations";
 
 const ProfileView = () => {
+  const { language } = useLanguage();
+
   const [dialogState, setDialogState] = useState<
     "deposit" | "withdrawal" | undefined
   >();
@@ -43,6 +32,21 @@ const ProfileView = () => {
     queryKey: ["ME"],
     queryFn: getMe,
   });
+
+  const tabs = [
+    {
+      label: translations.depositHistory[language],
+      content: <DepositHistoryView />,
+    },
+    {
+      label: translations.withdrawHistory[language],
+      content: <WithdrawHistoryView />,
+    },
+    {
+      label: translations.gameLogs[language],
+      content: <GameHistoryView />,
+    },
+  ];
 
   const onDialogClose = () => setDialogState(undefined);
 
@@ -73,7 +77,7 @@ const ProfileView = () => {
               <CardContent className="px-4 py-4 sm:px-5 sm:py-5">
                 <div className="space-y-6">
                   <div className="space-y-2">
-                    <p className="text-sm text-gray-400">Your balance </p>
+                    <p className="text-sm text-gray-400">{translations.yourBalance[language]}</p>
                     <div className="flex flex-row space-x-3 items-center ">
                       <img src="/icons/coin.png" className="h-5 w-5" />
                       <span className="font-semibold text-lg sm:text-2xl">

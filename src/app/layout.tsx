@@ -5,6 +5,7 @@ import QueryProvider from "../components/QueryProvider";
 import AuthGuard from "@/components/AuthGuard";
 import { AuthProvider } from "@/context/AuthContext";
 import { Toaster } from "@/components/ui/sonner";
+import { LanguageProvider } from "@/context/LanguageContext";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -34,8 +35,10 @@ export default function RootLayout({
       >
         <AuthProvider>
           <QueryProvider>
-            <AuthGuard>{children}</AuthGuard>
-            <Toaster/>
+            <LanguageProvider>
+              <AuthGuard>{children}</AuthGuard>
+              <Toaster />
+            </LanguageProvider>
           </QueryProvider>
         </AuthProvider>
       </body>

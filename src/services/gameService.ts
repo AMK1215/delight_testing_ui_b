@@ -20,7 +20,11 @@ const fetchAllGamesByProviderAndType = async ({
     return data.data as Game[];
   } catch (error) {
     console.error(error);
-    throw error;
+    if (get(error, "response", undefined)) {
+      console.error("Error Status Code:", get(error, "response.status"));
+      console.error("Error Response Data:", get(error, "response.data"));
+    }
+    throw new Error(`${get(error, "response.data.message")}`);
   }
 };
 
@@ -33,7 +37,11 @@ const fetchGameProductsByGameType = async (game_type_id: number) => {
     return data.data as GameProduct;
   } catch (error) {
     console.error(error);
-    throw new Error(`Fail to fetch game product : ${error}`);
+    if (get(error, "response", undefined)) {
+      console.error("Error Status Code:", get(error, "response.status"));
+      console.error("Error Response Data:", get(error, "response.data"));
+    }
+    throw new Error(`${get(error, "response.data.message")}`);
   }
 };
 
@@ -48,7 +56,11 @@ const fetchGamePlayHistory = async (
     return data.data as PlayHistory[];
   } catch (error) {
     console.error(error);
-    throw new Error(`Fail to fetch game product : ${error}`);
+    if (get(error, "response", undefined)) {
+      console.error("Error Status Code:", get(error, "response.status"));
+      console.error("Error Response Data:", get(error, "response.data"));
+    }
+    throw new Error(`${get(error, "response.data.message")}`);
   }
 };
 
@@ -61,7 +73,11 @@ const fetchHotGames = async () => {
     return data.data as Game[];
   } catch (error) {
     console.error(error);
-    throw error;
+    if (get(error, "response", undefined)) {
+      console.error("Error Status Code:", get(error, "response.status"));
+      console.error("Error Response Data:", get(error, "response.data"));
+    }
+    throw new Error(`${get(error, "response.data.message")}`);
   }
 };
 
