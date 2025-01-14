@@ -9,6 +9,7 @@ import { useEffect, useState } from "react";
 import { GameProduct } from "@/@types/game-product";
 import { useRouter } from "next/navigation";
 import GameListSkeleton from "@/components/GameListSkeleton";
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 
 const HomePage = () => {
   const router = useRouter();
@@ -55,7 +56,7 @@ const HomePage = () => {
             </div>
           ) : (
             filteredGameProducts.map((g, idx) => (
-              <div className="space-y-3" key={idx}>
+              <div className="space-y-3 relative" key={idx}>
                 <div>
                   <div className="inline-flex flex-row space-x-3 bg-black w-auto">
                     <div className="bg-active w-[5px]" />
@@ -64,13 +65,15 @@ const HomePage = () => {
                     </div>
                   </div>
                 </div>
-
-                <div className="grid gap-5 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 w-full">
-                  {g.products.length > 0 ? (
-                    g.products?.map((gp, idx) => (
-                      <div
+                {/* className="grid gap-5 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 w-full" */}
+                   {g.products.length > 0 ? (
+                    <>
+                    <Carousel className="max-w-[100vw] lg:max-w-[80vw] ">
+                    <CarouselContent>
+                    { g.products?.map((gp, idx) => (
+                      <CarouselItem
                         key={idx}
-                        className="space-y-4 cursor-pointer"
+                        className="basis-1/3 sm:basis-1/4 md:basis-1/5 cursor-pointer"
                         onClick={() =>
                           router.push(`game-type/${g.id}?provider=${gp.id}`)
                         }
@@ -79,21 +82,27 @@ const HomePage = () => {
                           <img
                             src={gp.imgUrl}
                             alt={gp.provider_name}
-                            className="object-cover w-full h-full rounded-md"
+                            className="object-contain w-full h-[200px] md:h-[230px] rounded-md"
                           />
                         </div>
                         <p className="text-sm text-center font-bold">
                           {gp.provider_name}
                         </p>
-                      </div>
-                    ))
+                      </CarouselItem>
+                    ))}
+                    </CarouselContent>
+                    <div className="absolute -top-[15%] right-[15%] sm:right-[12%] md:right-[8%] ">
+                    <CarouselPrevious className="!border-white !border-2" />
+                    <CarouselNext className="-left-2 !border-white !border-2"  />
+                    </div>
+                    </Carousel>
+                    </>
                   ) : (
                     <div className="text-sm text-gray-500">
                       No game available
                     </div>
                   )}
-                </div>
-              </div>
+               </div>
             ))
           )}
         </div>
