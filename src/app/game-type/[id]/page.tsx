@@ -12,8 +12,16 @@ import TopTabSkeleton from "./components/TopTabSkeleton";
 import TabsLayout from "@/components/layout/TabsLayout";
 import GameListSkeleton from "@/components/GameListSkeleton";
 import { toast } from "sonner";
+import 'keen-slider/keen-slider.min.css'
+import { useKeenSlider } from 'keen-slider/react' 
 
 const GameTypeView = () => {
+  const [sliderRef] = useKeenSlider({
+    loop: false,
+    mode: "snap",
+    rtl: false,
+    slides: { perView: "auto" },
+  });
   const params = useParams();
   const { id } = params;
   const searchParams = useSearchParams();
@@ -83,21 +91,21 @@ const GameTypeView = () => {
       searchValue={searchValue}
       onChangeInput={(v) => setSearchValue(v)}
     >
-      <div className="w-full max-w-[99%] p-4 space-y-4">
-        <div className="w-full">
+      <div className="slider-container max-w-[100vw] lg:max-w-[80w] p-4 space-y-4">
+        <div className="max-w-[100vw] lg:max-w-[80w] ">
           {isLoadingGameProducts ? (
             <TopTabSkeleton />
-          ) : (
-            <div className="flex gap-2 sm:gap-4 text-green-400 overflow-x-auto no-scrollbar">
+          ) : ( 
+             <div className="max-w-[100vw] lg:max-w-[75vw]  text-green-400 overflow-x-auto no-scrollbar keen-slider" ref={sliderRef}>
               {gameProducts?.products.map((p, index) => (
                 <button
                   key={index}
                   onClick={() => handleTabClick(p.id)}
-                  className={`text-sm flex items-center gap-2 px-3 text-nowrap py-2 rounded-lg hover:shadow-lg hover:border hover:border-active ${
+                  className={`min-w-max  max-w-max keen-slider__slide text-sm flex items-center gap-2 px-3 text-nowrap text-center py-2 rounded-lg hover:shadow-lg hover:border hover:border-active ${
                     tabValue === p.id
                       ? "bg-secondary"
                       : "bg-transparent hover:bg-secondary"
-                  }`}
+                  }`} 
                 >
                   <span>{p.provider_name}</span>
                 </button>
@@ -106,7 +114,7 @@ const GameTypeView = () => {
           )}
         </div>
 
-        <div className="grid gap-5 gap-y-8 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 w-full">
+        <div className="grid gap-5 gap-y-8 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 max-w-[100vw] lg:max-w-[80vw]">
           {isLoading || isFetching ? (
             <GameListSkeleton />
           ) : filterData.length > 0 ? (
@@ -118,9 +126,9 @@ const GameTypeView = () => {
               >
                 <img
                   src={game.image_url}
-                  className="h-full w-full object-cover rounded-md"
+                  className="h-[85%] w-full object-cover rounded-md"
                 />
-                <span>{game.game_name}</span>
+                <span className="line-clamp-2 text-sm">{game.game_name}</span>
               </button>
             ))
           ) : (
