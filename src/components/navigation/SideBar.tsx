@@ -10,6 +10,7 @@ import { RiAdvertisementLine } from "react-icons/ri";
 import { Skeleton } from "../ui/skeleton";
 import { useLanguage } from "@/context/LanguageContext";
 import { translations } from "@/configs/translations";
+import UserInfo from "./UserInfo";
 
 interface SideMenuItem {
   label: string;
@@ -21,7 +22,7 @@ interface SideMenuProps {
   className?: string;
 }
 
-const SideMenu = ({ className }: SideMenuProps) => {
+const SideBar = ({ className }: SideMenuProps) => {
   const pathname = usePathname();
   const { language } = useLanguage();
 
@@ -71,6 +72,9 @@ const SideMenu = ({ className }: SideMenuProps) => {
           >
             <span className="">APP NAME</span>
           </Link>
+        </div>
+        <div className="p-5">
+          <UserInfo />
         </div>
         <div className="flex-grow">
           <nav className="grid items-start px-4 text-sm font-medium space-y-2">
@@ -134,4 +138,4 @@ const SideMenu = ({ className }: SideMenuProps) => {
   );
 };
 
-export default SideMenu;
+export default SideBar;
