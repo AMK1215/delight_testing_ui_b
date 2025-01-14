@@ -29,6 +29,7 @@ import Link from "next/link";
 import { Skeleton } from "../ui/skeleton";
 import { Dialog, DialogContent } from "../ui/dialog";
 import { useState } from "react";
+import UserInfo from "./UserInfo";
 
 interface SideMenuItem {
   label: string;
@@ -75,6 +76,7 @@ const TopNav = ({ className }: TopNavProps) => {
   const pathname = usePathname();
 
   const [showDialog, setShowDialog] = useState(false);
+  const [isSheetOpen, setIsSheetOpen] = useState(false); // Control sheet state
 
   const isHomeActive =
     pathname === "/" ||
@@ -120,7 +122,7 @@ const TopNav = ({ className }: TopNavProps) => {
 
   return (
     <header className="flex h-14 lg:h-[60px] items-center gap-4 border-b bg-muted/40 px-6 border-gray-800">
-      <Sheet>
+      <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
         <SheetTrigger asChild>
           <Button variant="outline" size="icon" className="lg:hidden">
             <MenuIcon className="h-6 w-6" />
@@ -138,6 +140,9 @@ const TopNav = ({ className }: TopNavProps) => {
                 <span className="">APP NAME</span>
               </Link>
             </div>
+            <div className="p-5">
+              <UserInfo />
+            </div>
             <div className="flex-grow">
               <nav className="grid items-start px-4 text-sm font-medium space-y-2">
                 {sideMenuItems.map((item, idx) => {
@@ -153,6 +158,7 @@ const TopNav = ({ className }: TopNavProps) => {
                           : "text-gray hover:text-active hover:bg-secondary"
                       }`}
                       prefetch={false}
+                      onClick={() => setIsSheetOpen(false)} // Close the sheet on click
                     >
                       {item.icon}
                       {item.label}
@@ -245,22 +251,6 @@ const TopNav = ({ className }: TopNavProps) => {
               <LogOutIcon className="h-5 w-5 text-gray-200" />
             </button>
           </div>
-          {/* <div>
-            <Button
-              className="border bg-active border-active text-black hover:text-active font-bold rounded-full"
-              onClick={() => router.push("/register")}
-            >
-              Sign Up
-            </Button>
-          </div>
-          <div>
-            <Button
-              className="border border-active text-active rounded-full font-bold"
-              onClick={() => router.push("/login")}
-            >
-              Login
-            </Button>
-          </div> */}
         </div>
       </div>
       <Dialog

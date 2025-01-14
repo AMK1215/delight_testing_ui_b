@@ -29,6 +29,7 @@ const staticTabs = [
 const FilterSideMenu = () => {
   const router = useRouter();
   const [activeIndex, setActiveIndex] = useState(0);
+  const [isOpen, setIsOpen] = useState(false); // Add state for opening the sheet
 
   const { data } = useQuery({
     queryKey: ["GET_GAME_TYPES"],
@@ -45,6 +46,7 @@ const FilterSideMenu = () => {
   const handleTabClick = (index: number) => {
     setActiveIndex(index);
     router.push(tabs[index].route);
+    setIsOpen(false); // Close the sheet after clicking a tab
   };
 
   useEffect(() => {
@@ -56,11 +58,16 @@ const FilterSideMenu = () => {
   }, [tabs]);
 
   return (
-    <Sheet>
+    <Sheet open={isOpen} onOpenChange={setIsOpen}>
+      {" "}
+      {/* Control Sheet state */}
       <SheetTrigger>
-        <div className="bg-active p-3 cursor-pointer rounded-full text-secondary absolute bottom-4 right-4">
-          <FilterIcon size={18} />
-        </div>
+        <button
+          onClick={() => setIsOpen(true)} // Open the sheet
+          className="bg-active p-3 cursor-pointer rounded-full text-secondary absolute bottom-4 right-4"
+        >
+          <FilterIcon size={14} />
+        </button>
       </SheetTrigger>
       <SheetContent className="px-0 py-0">
         <SheetHeader className="relative h-full">

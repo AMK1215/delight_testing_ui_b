@@ -1,24 +1,32 @@
 "use client";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { signIn } from "@/services/userService";
+
 import { useMutation } from "@tanstack/react-query";
-import { EyeIcon, EyeOffIcon, LockIcon, UserIcon } from "lucide-react";
-import Image from "next/image";
-import { useRouter } from "next/navigation";
-import { useState, useCallback } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
+import { useState, useCallback } from "react";
+import { useRouter } from "next/navigation";
+import Image from "next/image";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormMessage,
+} from "@/components/ui/form";
+import { EyeIcon, EyeOffIcon, LockIcon, UserIcon } from "lucide-react";
+import { signIn } from "@/services/userService";
 
-// Define your Zod schema for validation
+// Define Zod schema
 const formSchema = z.object({
-  username: z.string().min(2, {
-    message: "Username must be at least 2 characters.",
-  }),
-  password: z.string().min(6, {
-    message: "Password must be at least 6 characters.",
-  }),
+  username: z
+    .string()
+    .min(2, { message: "Username must be at least 2 characters." }),
+  password: z
+    .string()
+    .min(6, { message: "Password must be at least 6 characters." }),
 });
 
 type FormData = z.infer<typeof formSchema>;
@@ -28,21 +36,9 @@ const LoginPage = () => {
   const [pwType, setPwType] = useState("password");
   const [error, setError] = useState<string | null>(null);
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<FormData>({
-    resolver: zodResolver(formSchema),
-  });
-
   const togglePwType = useCallback(() => {
     setPwType((prev) => (prev === "password" ? "text" : "password"));
   }, []);
-
-  const goTo = (url: string) => {
-    router.push(url);
-  };
 
   const { mutate: logIn, isPending } = useMutation({
     mutationFn: signIn,
@@ -50,17 +46,20 @@ const LoginPage = () => {
       localStorage.setItem("token", token);
       router.push("/");
     },
-    onError: (error) => {
-      console.error(error);
+    onError: () => {
       setError("Invalid username or password. Please try again.");
     },
   });
 
+  const form = useForm<FormData>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      username: "",
+      password: "",
+    },
+  });
+
   const onSubmit = (data: FormData) => {
-    if (!data.username || !data.password) {
-      setError("Username and password are required.");
-      return;
-    }
     setError(null);
     logIn({ user_name: data.username, password: data.password });
   };
@@ -79,70 +78,80 @@ const LoginPage = () => {
           <h1 className="my-10 hidden bg-gradient-to-r from-[#b2ff54] via-[#57b400] to-[#87600c] bg-clip-text py-[10px] text-4xl font-black uppercase text-transparent lg:block">
             WELCOME
           </h1>
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-            <div className="space-y-2">
-              <div className="w-full px-2 flex items-center gap-1 border-l-2 border-x-active pb-1 border-b-2 border-y-black">
-                <UserIcon className="text-active" aria-label="Username Icon" />
-                <Input
-                  placeholder="Username"
-                  {...register("username")}
-                  aria-label="Username"
-                />
-              </div>
-              {errors.username && (
-                <p className="text-red-500 text-sm">
-                  {errors.username.message}
-                </p>
-              )}
-            </div>
-
-            <div className="space-y-2">
-              <div className="w-full px-2 flex items-center justify-between gap-1 border-l-2 border-x-active pb-1 border-b-2 border-y-black">
-                <div className="flex items-center gap-1">
-                  <LockIcon
-                    className="text-active"
-                    aria-label="Password Icon"
-                  />
-                  <Input
-                    type={pwType === "password" ? "password" : "text"}
-                    placeholder="Password"
-                    {...register("password")}
-                    aria-label="Password"
-                  />
-                </div>
-                {pwType === "password" ? (
-                  <EyeOffIcon
-                    onClick={togglePwType}
-                    className="text-active cursor-pointer"
-                    aria-label="Show Password"
-                  />
-                ) : (
-                  <EyeIcon
-                    onClick={togglePwType}
-                    className="text-active cursor-pointer"
-                    aria-label="Hide Password"
-                  />
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+              {/* Username Field */}
+              <FormField
+                control={form.control}
+                name="username"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <div className="w-full px-2 flex items-center gap-1 border-l-2 border-x-active pb-1 border-b-2 border-y-black">
+                        <UserIcon
+                          className="text-active"
+                          aria-label="Username Icon"
+                        />
+                        <Input
+                          placeholder="Username"
+                          {...field}
+                          aria-label="Username"
+                        />
+                      </div>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
                 )}
+              />
+
+              <FormField
+                control={form.control}
+                name="password"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <div className="w-full px-2 flex items-center gap-1 border-l-2 border-x-active pb-1 border-b-2 border-y-black">
+                        <LockIcon
+                          className="text-active"
+                          aria-label="Password Icon"
+                        />
+                        <Input
+                          type={pwType === "password" ? "password" : "text"}
+                          placeholder="Password"
+                          {...field}
+                          aria-label="Password"
+                        />
+                        {pwType === "password" ? (
+                          <EyeOffIcon
+                            onClick={togglePwType}
+                            className="cursor-pointer"
+                          />
+                        ) : (
+                          <EyeIcon
+                            onClick={togglePwType}
+                            className="cursor-pointer"
+                          />
+                        )}
+                      </div>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              {error && <p className="text-red-500 text-sm">{error}</p>}
+
+              <div className="text-center">
+                <Button
+                  type="submit"
+                  disabled={isPending}
+                  className="w-max border px-16 mt-6 bg-active border-active text-black hover:text-active text-base font-bold rounded-full"
+                >
+                  {isPending ? "Logging in..." : "Login"}
+                </Button>
               </div>
-              {errors.password && (
-                <p className="text-red-500 text-sm">
-                  {errors.password.message}
-                </p>
-              )}
-            </div>
-
-            {error && <p className="text-red-500 text-sm">{error}</p>}
-
-            <div className="text-center">
-              <Button
-                type="submit"
-                disabled={isPending}
-                className="w-max border px-16 mt-6 bg-active border-active text-black hover:text-active text-base font-bold rounded-full"
-              >
-                {isPending ? "Logging in..." : "Login"}
-              </Button>
-            </div>
-          </form>
+            </form>
+          </Form>
         </div>
 
         <div className="absolute bottom-0 w-full mt-10">
@@ -153,7 +162,7 @@ const LoginPage = () => {
               height={50}
               alt="Left Pattern"
             />
-            <p className="bg-secondary pt-2">New member ?</p>
+            <p className="bg-secondary pt-2">New member?</p>
             <Image
               src={"/images/rightPattern.svg"}
               width={50}
@@ -163,7 +172,7 @@ const LoginPage = () => {
           </div>
           <div className="text-center bg-secondary py-10">
             <Button
-              onClick={() => goTo("/register")}
+              onClick={() => router.push("/register")}
               className="px-12 border bg-black hover:bg-white border-white text-white hover:text-black font-bold rounded-full"
             >
               Sign Up

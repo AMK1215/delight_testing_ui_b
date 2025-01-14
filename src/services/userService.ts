@@ -61,4 +61,42 @@ const logOut = async () => {
   }
 };
 
-export { getMe, signIn, logOut };
+const signUp = async ({
+  name,
+  password,
+  phone,
+  password_confirmation,
+  referral_code,
+}: {
+  name: string;
+  password: string;
+  phone: string;
+  password_confirmation: string;
+  referral_code: string;
+}) => {
+  try {
+    const { data } = await apiService.post(
+      `${ApiConfig.baseUrl}/${ApiConfig.register}`,
+      {
+        name,
+        password,
+        phone,
+        password_confirmation,
+        referral_code,
+      }
+    );
+
+    return {
+      user: data.data.user as User,
+      token: data.data.token as string,
+    };
+  } catch (error) {
+    console.error(error);
+    if (get(error, "response", undefined)) {
+      console.error("Error Status Code:", get(error, "response.status"));
+      console.error("Error Response Data:", get(error, "response.data"));
+    }
+    throw new Error(`${get(error, "response.data.message")}`);
+  }
+};
+export { getMe, signIn, logOut, signUp };
