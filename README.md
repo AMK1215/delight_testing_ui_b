@@ -27,6 +27,7 @@ Visit [http://localhost:3000](http://localhost:3000) to view your application.
 - React
 - TypeScript
 - Tailwind CSS
+- UI Schadcn => Visit to [Shadcn](https://ui.shadcn.com/)
 - [Other major technologies]
 
 ## Scripts
