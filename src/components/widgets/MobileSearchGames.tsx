@@ -3,8 +3,6 @@
 import { SearchIcon, Undo2Icon, XIcon } from 'lucide-react';
 import React, { useRef, useState } from 'react';
 import SuggestedResult from './SuggestedResults';
-import SearchResult from './SearchResults';
-import SearchNoResult from './SearchNoResult';
 
 const MobileSearchGames = () => {
     const [search, setSearch] = useState('');
